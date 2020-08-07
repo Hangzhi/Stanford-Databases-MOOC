@@ -1,0 +1,58 @@
+-- q1
+SELECT TITLE FROM MOVIE
+WHERE DIRECTOR = 'Steven Spielberg'
+
+-- q2
+SELECT DISTINCT YEAR FROM
+MOVIE NATURAL JOIN RATING
+WHERE STARS > 3
+ORDER BY YEAR ASC
+
+-- q3
+SELECT DISTINCT TITLE
+FROM MOVIE, RATING
+WHERE MOVIE.MID NOT IN (SELECT MID FROM RATING)
+
+-- q4
+select distinct re.name
+from reviewer re, rating ra
+where re.rid = ra.rid and ra.ratingDate is null
+
+-- q5
+SELECT NAME,TITLE,STARS,RATINGDATE
+FROM (REVIEWER NATURAL JOIN RATING ) NATURAL JOIN MOVIE 
+ORDER BY NAME,TITLE, STARS ASC
+
+-- q6
+SELECT DISTINCT NAME,TITLE
+FROM 
+	(RATING RA1 JOIN RATING RA2 
+	ON RA1.RID = RA2.RID AND RA1.MID=RA2.MID AND RA1.RATINGDATE > RA2.RATINGDATE AND RA1.STARS > RA2.STARS) 
+	NATURAL JOIN REVIEWER
+	NATURAL JOIN MOVIE
+
+-- q7
+SELECT DISTINCT TITLE, MAX(STARS)
+FROM MOVIE NATURAL JOIN RATING 
+WHERE (SELECT COUNT(STARS) FROM RATING GROUP BY MID) > 1
+GROUP BY MID
+ORDER BY TITLE
+
+-- q8
+SELECT TITLE, RATINGSPREAD
+FROM
+	(SELECT TITLE, MAX(STARS)-MIN(STARS) AS RATINGSPREAD
+	FROM MOVIE NATURAL JOIN RATING
+	GROUP BY MID)
+ORDER BY RATINGSPREAD DESC, TITLE ASC
+
+-- q9
+with stat as
+(select ra.mid, avg(stars) as avgStars, year
+from rating ra, movie m
+where ra.mid = m.mid
+group by ra.mid
+)
+select (select avg(avgStars) from stat where year<1980)-(select avg(avgStars) from stat where year>1980) 
+ -- there is minor difference between my result and the standard answer. It'll be great if anyone could provide some better solutions.
+ 
