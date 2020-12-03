@@ -1,0 +1,1652 @@
+0
+00:00:00,510 --> 00:00:04,000
+This video introduces online analytical processing or OLAP.
+
+1
+00:00:04,440 --> 00:00:06,110
+A subsequent video will have
+
+2
+00:00:06,410 --> 00:00:07,850
+a demo of OLAP queries in action.
+
+3
+00:00:09,070 --> 00:00:11,000
+Overall, database activity can
+
+4
+00:00:11,090 --> 00:00:12,640
+be divided into two broad classes.
+
+5
+00:00:13,640 --> 00:00:15,150
+One of them, the traditional one,
+
+6
+00:00:15,740 --> 00:00:19,070
+is known as OLTP, or online transaction processing.
+
+7
+00:00:19,910 --> 00:00:20,720
+The other one, the subject
+
+8
+00:00:21,140 --> 00:00:22,630
+of this video, came about more
+
+9
+00:00:22,800 --> 00:00:23,960
+recently, and it's known
+
+10
+00:00:24,250 --> 00:00:26,250
+as OLAP, or online analytical processing.
+
+11
+00:00:28,840 --> 00:00:29,970
+Online transaction processing is typically
+
+12
+00:00:30,350 --> 00:00:31,720
+characterized by short transactions,
+
+13
+00:00:32,750 --> 00:00:33,500
+both queries and updates.
+
+14
+00:00:34,330 --> 00:00:35,660
+Things like updating an account
+
+15
+00:00:36,130 --> 00:00:37,180
+balance in a bank database
+
+16
+00:00:37,670 --> 00:00:39,380
+or logging a page view in a web application.
+
+17
+00:00:40,700 --> 00:00:43,770
+Queries in OLTP databases are generally fairly simple.
+
+18
+00:00:44,570 --> 00:00:47,190
+Find an account balance or find the GPA of a student.
+
+19
+00:00:47,750 --> 00:00:49,580
+They typically touch small portions of the data.
+
+20
+00:00:50,770 --> 00:00:52,660
+And updates in this environment can be frequent.
+
+21
+00:00:53,810 --> 00:00:55,080
+We might be making airline seat
+
+22
+00:00:55,390 --> 00:00:58,480
+reservations or updating a online shopping cart.
+
+23
+00:00:59,950 --> 00:01:02,170
+OLAP is pretty much the opposite in all respects.
+
+24
+00:01:03,420 --> 00:01:04,390
+In OLAP, we have long
+
+25
+00:01:04,830 --> 00:01:06,860
+transactions, often complex analysis
+
+26
+00:01:07,470 --> 00:01:09,420
+of the data or data mining type operations.
+
+27
+00:01:10,780 --> 00:01:11,760
+The queries as I said, can
+
+28
+00:01:11,880 --> 00:01:13,570
+be complex and especially they
+
+29
+00:01:13,870 --> 00:01:15,520
+often touch large portions of
+
+30
+00:01:15,580 --> 00:01:17,950
+the data rather than small portions as in OLTP.
+
+31
+00:01:19,420 --> 00:01:20,600
+And updates in the OLAP
+
+32
+00:01:20,860 --> 00:01:22,050
+environment tend to be infrequent,
+
+33
+00:01:22,630 --> 00:01:23,900
+in fact, sometimes in the
+
+34
+00:01:24,100 --> 00:01:26,530
+OLAP environment there are no updates to the data at all.
+
+35
+00:01:27,540 --> 00:01:29,620
+Now, these two are extremes
+
+36
+00:01:30,450 --> 00:01:31,220
+and really there is a spectrum
+
+37
+00:01:31,900 --> 00:01:32,870
+between those two extremes.
+
+38
+00:01:34,290 --> 00:01:35,400
+We might have a sort of, moderate
+
+39
+00:01:35,850 --> 00:01:37,530
+amount of update and queries
+
+40
+00:01:37,910 --> 00:01:39,460
+that touch a moderate portion of the data.
+
+41
+00:01:40,190 --> 00:01:41,250
+But the fact is that
+
+42
+00:01:41,540 --> 00:01:44,850
+database systems traditionally were designed for the first extreme.
+
+43
+00:01:46,000 --> 00:01:49,020
+And then special techniques were developed for the other extreme.
+
+44
+00:01:49,910 --> 00:01:51,810
+So the systems are tuned for the two extremes.
+
+45
+00:01:52,380 --> 00:01:53,490
+And depending on ones work load
+
+46
+00:01:53,680 --> 00:01:55,370
+one might choose to use different
+
+47
+00:01:55,960 --> 00:01:57,000
+options in a database system
+
+48
+00:01:58,340 --> 00:01:59,230
+just a little bit more terminology
+
+49
+00:02:00,030 --> 00:02:00,960
+in the OLAP world.
+
+50
+00:02:01,630 --> 00:02:03,110
+There's a concept called data warehousing.
+
+51
+00:02:03,800 --> 00:02:05,120
+It's really a software architecture.
+
+52
+00:02:06,160 --> 00:02:07,620
+The idea is that often in
+
+53
+00:02:08,070 --> 00:02:09,120
+enterprises or other operation,
+
+54
+00:02:10,070 --> 00:02:12,340
+there are lots of operational sources.
+
+55
+00:02:12,920 --> 00:02:13,730
+So you can think of a
+
+56
+00:02:13,920 --> 00:02:15,610
+point of sale, for example, might
+
+57
+00:02:15,830 --> 00:02:17,770
+have many, many OLTP database
+
+58
+00:02:18,230 --> 00:02:19,540
+pieces related to an enterprise,
+
+59
+00:02:20,680 --> 00:02:22,720
+and data warehousing is the
+
+60
+00:02:22,840 --> 00:02:23,870
+process of bringing the data from
+
+61
+00:02:24,200 --> 00:02:26,120
+all of those distributed OLTP sources
+
+62
+00:02:26,880 --> 00:02:29,290
+into a single, gigantic warehouse where
+
+63
+00:02:29,490 --> 00:02:30,440
+the point then is to do
+
+64
+00:02:30,920 --> 00:02:32,390
+analyses of the data, and
+
+65
+00:02:32,510 --> 00:02:33,980
+that would fall under the OLAP camp.
+
+66
+00:02:35,100 --> 00:02:36,470
+Another term you might encounter is
+
+67
+00:02:36,610 --> 00:02:38,710
+decision support systems also known as DSS.
+
+68
+00:02:39,510 --> 00:02:41,090
+This isn't really an exact term.
+
+69
+00:02:41,780 --> 00:02:42,850
+It's generally used to talk
+
+70
+00:02:43,000 --> 00:02:45,780
+about infrastructure for again large scale data analyses.
+
+71
+00:02:46,790 --> 00:02:47,780
+So, if you think of
+
+72
+00:02:47,870 --> 00:02:49,310
+a data warehouse, where we're
+
+73
+00:02:49,520 --> 00:02:50,280
+bringing in a lot of
+
+74
+00:02:50,370 --> 00:02:51,910
+data from operational sources, and
+
+75
+00:02:52,030 --> 00:02:53,120
+that warehouse is tuned for
+
+76
+00:02:53,340 --> 00:02:54,760
+OLAP queries that would
+
+77
+00:02:54,930 --> 00:02:57,040
+be thought of as a decision support system.
+
+78
+00:02:57,670 --> 00:02:58,590
+And, of course, this system
+
+79
+00:02:58,990 --> 00:03:00,130
+is designed to support decisions
+
+80
+00:03:00,660 --> 00:03:02,620
+that are made, again, based on data analysis.
+
+81
+00:03:04,160 --> 00:03:06,380
+Now, let's get into some technical details of OLAP.
+
+82
+00:03:07,460 --> 00:03:09,180
+Frequently applications that are
+
+83
+00:03:09,280 --> 00:03:10,800
+doing online analytical processing
+
+84
+00:03:12,060 --> 00:03:13,490
+are designed based around a
+
+85
+00:03:13,810 --> 00:03:15,250
+star schema, so it's a
+
+86
+00:03:15,360 --> 00:03:16,980
+certain type of relational schema.
+
+87
+00:03:18,140 --> 00:03:21,430
+In a star schema, there's usually one fact table.
+
+88
+00:03:22,230 --> 00:03:23,980
+That will be a typically very
+
+89
+00:03:24,230 --> 00:03:26,140
+large table, it will be updated frequently.
+
+90
+00:03:26,890 --> 00:03:28,150
+Often it's actually append only,
+
+91
+00:03:28,590 --> 00:03:30,950
+so there are only inserts into the fact table.
+
+92
+00:03:31,940 --> 00:03:34,360
+And then there are maybe many dimension tables.
+
+93
+00:03:35,140 --> 00:03:38,010
+Those are updated infrequently and don't tend to be as large.
+
+94
+00:03:40,060 --> 00:03:40,910
+So examples of a fact table
+
+95
+00:03:41,300 --> 00:03:43,040
+might be sales transactions in
+
+96
+00:03:43,160 --> 00:03:44,480
+a sales database or in
+
+97
+00:03:44,570 --> 00:03:45,940
+a university database, maybe students
+
+98
+00:03:46,500 --> 00:03:48,150
+enrolling in courses or in
+
+99
+00:03:48,290 --> 00:03:50,150
+a web application logging the page views.
+
+100
+00:03:51,390 --> 00:03:52,430
+In all of these cases we can
+
+101
+00:03:52,580 --> 00:03:53,580
+see that the fact table can
+
+102
+00:03:53,800 --> 00:03:55,130
+be very large and can
+
+103
+00:03:55,360 --> 00:03:57,350
+be append only, so inserts only.
+
+104
+00:03:58,400 --> 00:03:59,880
+Examples of dimension tables
+
+105
+00:04:00,660 --> 00:04:01,880
+might be in a sales
+
+106
+00:04:02,130 --> 00:04:03,850
+database store's items and
+
+107
+00:04:04,030 --> 00:04:07,390
+customers in a college enrollment database.
+
+108
+00:04:07,940 --> 00:04:10,380
+Maybe students and courses in a web application.
+
+109
+00:04:11,110 --> 00:04:13,550
+Maybe web pages users and advertisers.
+
+110
+00:04:14,180 --> 00:04:15,280
+So, you can see, that
+
+111
+00:04:15,540 --> 00:04:17,000
+these are generally smaller
+
+112
+00:04:17,519 --> 00:04:18,850
+tables, they're more stable, they're
+
+113
+00:04:18,970 --> 00:04:20,370
+not updated as frequently.
+
+114
+00:04:21,399 --> 00:04:22,360
+You can sort of think
+
+115
+00:04:22,600 --> 00:04:24,270
+of dimension tables as things
+
+116
+00:04:24,660 --> 00:04:26,480
+in the real world and then
+
+117
+00:04:26,920 --> 00:04:29,010
+fact tables as logging things that happened.
+
+118
+00:04:29,870 --> 00:04:32,680
+It's not always divided this way but, it's not a bad approximation.
+
+119
+00:04:34,240 --> 00:04:35,140
+Now, you might be wondering
+
+120
+00:04:35,500 --> 00:04:36,920
+why is it called a
+
+121
+00:04:37,100 --> 00:04:38,700
+star schema and it's called
+
+122
+00:04:39,050 --> 00:04:40,100
+that because we have the
+
+123
+00:04:40,310 --> 00:04:41,510
+fact table sort of, centrally
+
+124
+00:04:42,220 --> 00:04:44,190
+referencing dimension tables around it.
+
+125
+00:04:44,320 --> 00:04:44,890
+So, I'll draw the picture.
+
+126
+00:04:45,670 --> 00:04:48,250
+Let's take a particular example and let's look at the sales domain.
+
+127
+00:04:49,140 --> 00:04:50,240
+So, we'll have our fact
+
+128
+00:04:50,660 --> 00:04:51,690
+table here, which will be
+
+129
+00:04:51,900 --> 00:04:53,610
+the sales table and that
+
+130
+00:04:53,820 --> 00:04:55,360
+will log sales transactions actions.
+
+131
+00:04:55,770 --> 00:04:56,860
+It will include the store where
+
+132
+00:04:57,000 --> 00:04:58,250
+the sale was made, the item
+
+133
+00:04:58,640 --> 00:04:59,720
+that was sold, the customer, how
+
+134
+00:04:59,890 --> 00:05:01,510
+many were sold, and the price that was paid.
+
+135
+00:05:02,260 --> 00:05:04,800
+And then the other three tables are the dimension tables.
+
+136
+00:05:05,490 --> 00:05:07,090
+So those those are giving
+
+137
+00:05:07,240 --> 00:05:08,330
+us information about the stores
+
+138
+00:05:08,950 --> 00:05:09,960
+and the items and the customers.
+
+139
+00:05:11,470 --> 00:05:13,200
+So, I've drawn a picture of our schema here.
+
+140
+00:05:13,420 --> 00:05:15,860
+We have our central fact table, the sales table.
+
+141
+00:05:16,850 --> 00:05:17,700
+And we can see that the
+
+142
+00:05:17,790 --> 00:05:18,990
+sales table contains these three
+
+143
+00:05:19,190 --> 00:05:20,580
+columns I've abbreviated them in
+
+144
+00:05:20,650 --> 00:05:22,100
+the picture: the Store ID, Item
+
+145
+00:05:22,470 --> 00:05:23,850
+ID, and the Customer ID.
+
+146
+00:05:24,870 --> 00:05:27,030
+The store ID values in
+
+147
+00:05:27,230 --> 00:05:28,700
+this column will be foreign
+
+148
+00:05:29,170 --> 00:05:30,460
+key attributes to the
+
+149
+00:05:30,540 --> 00:05:31,650
+primary key of the store
+
+150
+00:05:31,890 --> 00:05:33,750
+table if you remember our constraints video.
+
+151
+00:05:34,520 --> 00:05:35,550
+So we can think of these as
+
+152
+00:05:35,860 --> 00:05:36,870
+pointers into the store
+
+153
+00:05:37,200 --> 00:05:39,660
+table, least specifically matching store
+
+154
+00:05:40,410 --> 00:05:41,300
+IDs over here.
+
+155
+00:05:42,070 --> 00:05:44,230
+And we'll have similarly our
+
+156
+00:05:44,880 --> 00:05:45,780
+item IDs will be foreign
+
+157
+00:05:46,260 --> 00:05:47,340
+keys to the item table.
+
+158
+00:05:47,770 --> 00:05:49,510
+I won't actually point to the values here.
+
+159
+00:05:50,330 --> 00:05:52,960
+And then our costumer IDs
+
+160
+00:05:53,310 --> 00:05:55,680
+over here will be pointing to the customer table.
+
+161
+00:05:56,490 --> 00:05:57,650
+So if you look at
+
+162
+00:05:57,790 --> 00:05:59,830
+this squinting, you will
+
+163
+00:06:00,130 --> 00:06:01,420
+see that it is kind of
+
+164
+00:06:01,480 --> 00:06:02,930
+a star schema with the
+
+165
+00:06:03,260 --> 00:06:04,960
+central fact table pointing
+
+166
+00:06:05,280 --> 00:06:08,250
+to the dimension tables around it, and that's where the name comes from.
+
+167
+00:06:09,380 --> 00:06:10,830
+Just a little more terminology.
+
+168
+00:06:11,550 --> 00:06:14,030
+The first three attributes here in the fact table.
+
+169
+00:06:14,290 --> 00:06:15,700
+These three are what are
+
+170
+00:06:15,750 --> 00:06:17,420
+known as dimension attributes.
+
+171
+00:06:18,340 --> 00:06:19,630
+So those are the attributes
+
+172
+00:06:20,120 --> 00:06:22,580
+that are foreign keys into the dimension tables.
+
+173
+00:06:23,600 --> 00:06:25,150
+Then the remaining attributes in
+
+174
+00:06:25,240 --> 00:06:26,580
+this case the quantity and the
+
+175
+00:06:26,680 --> 00:06:28,870
+price are called dependent attributes.
+
+176
+00:06:29,340 --> 00:06:30,810
+So they're I guess dependent on the
+
+177
+00:06:30,960 --> 00:06:32,800
+values for the dimension
+
+178
+00:06:33,440 --> 00:06:35,150
+attributes and typically, queries will
+
+179
+00:06:35,580 --> 00:06:38,070
+tend to aggregate on the dependent attributes.
+
+180
+00:06:38,420 --> 00:06:39,920
+We'll see examples of that in a moment.
+
+181
+00:06:40,880 --> 00:06:41,910
+So, now that we known
+
+182
+00:06:42,050 --> 00:06:43,230
+what a star schema looks like,
+
+183
+00:06:43,450 --> 00:06:44,350
+let's look at the type of
+
+184
+00:06:44,530 --> 00:06:45,730
+queries that are generally issued
+
+185
+00:06:46,000 --> 00:06:48,010
+over this schema, and they're called OLAP queries.
+
+186
+00:06:48,900 --> 00:06:50,320
+Typically a query over
+
+187
+00:06:50,920 --> 00:06:52,350
+a star schema will first
+
+188
+00:06:52,740 --> 00:06:54,400
+join some or all of the relations.
+
+189
+00:06:55,700 --> 00:06:56,820
+And when you're joining the sale
+
+190
+00:06:57,240 --> 00:06:58,210
+as the fact table with
+
+191
+00:06:58,340 --> 00:06:59,880
+the dimension tables, you can
+
+192
+00:06:59,920 --> 00:07:01,780
+almost think of it as expanding the
+
+193
+00:07:02,050 --> 00:07:03,080
+facts in the sales table
+
+194
+00:07:03,390 --> 00:07:05,410
+to include more information about the sales.
+
+195
+00:07:06,100 --> 00:07:07,820
+Since we have the foreign keys we'll
+
+196
+00:07:07,980 --> 00:07:10,810
+be adding, for example, to the information about a sale.
+
+197
+00:07:11,150 --> 00:07:11,870
+More about the store.
+
+198
+00:07:12,170 --> 00:07:13,140
+The city and state of the store.
+
+199
+00:07:13,910 --> 00:07:15,410
+For a sale item will
+
+200
+00:07:15,500 --> 00:07:17,050
+be adding the category brand and so on.
+
+201
+00:07:17,090 --> 00:07:18,390
+So that's the join
+
+202
+00:07:18,710 --> 00:07:19,630
+process and the query will
+
+203
+00:07:19,770 --> 00:07:20,660
+join as much as it
+
+204
+00:07:20,750 --> 00:07:23,100
+needs in order to do the rest of it's work.
+
+205
+00:07:23,950 --> 00:07:25,590
+It might then filter the data.
+
+206
+00:07:26,060 --> 00:07:27,000
+For example we might decide
+
+207
+00:07:27,380 --> 00:07:28,280
+that in our query we only
+
+208
+00:07:28,540 --> 00:07:29,760
+care about stores in California
+
+209
+00:07:30,710 --> 00:07:32,290
+or customers in California, we're only
+
+210
+00:07:32,520 --> 00:07:34,300
+interested in shirts and so on.
+
+211
+00:07:34,540 --> 00:07:35,850
+So they can filter on the
+
+212
+00:07:36,390 --> 00:07:37,840
+dimension attributes after joining,
+
+213
+00:07:38,160 --> 00:07:40,210
+or could filter on the price or quantity as well.
+
+214
+00:07:41,700 --> 00:07:44,620
+After filtering there's often a group by and an aggregation.
+
+215
+00:07:45,890 --> 00:07:47,230
+So we might decide that we're
+
+216
+00:07:47,450 --> 00:07:49,510
+interested in figuring out our
+
+217
+00:07:49,910 --> 00:07:51,660
+total sales divided by customer
+
+218
+00:07:52,370 --> 00:07:54,520
+or by item or by state or all of those.
+
+219
+00:07:55,070 --> 00:07:57,080
+And then the aggregation might sum
+
+220
+00:07:57,290 --> 00:07:58,290
+up the sales or it might
+
+221
+00:07:58,560 --> 00:08:00,530
+determine the average price that's sold.
+
+222
+00:08:01,290 --> 00:08:02,390
+We'll be doing a number of this
+
+223
+00:08:02,530 --> 00:08:04,410
+type of query in our demo later on.
+
+224
+00:08:05,280 --> 00:08:06,630
+So if you think about executing
+
+225
+00:08:07,000 --> 00:08:08,380
+queries of this type, they
+
+226
+00:08:08,680 --> 00:08:10,190
+can be quite complex and they
+
+227
+00:08:10,260 --> 00:08:11,760
+can touch large portions of the database.
+
+228
+00:08:12,720 --> 00:08:13,940
+So if we're worried about performance,
+
+229
+00:08:14,630 --> 00:08:16,780
+and our data is large, we do have a worry.
+
+230
+00:08:17,330 --> 00:08:18,670
+Running this type of
+
+231
+00:08:18,830 --> 00:08:20,210
+query on a gigantic database
+
+232
+00:08:21,020 --> 00:08:22,560
+over a standard database system
+
+233
+00:08:22,910 --> 00:08:24,720
+can be very slow, but over
+
+234
+00:08:25,560 --> 00:08:26,580
+the past decade or so,
+
+235
+00:08:27,230 --> 00:08:28,720
+special indexing techniques have
+
+236
+00:08:28,830 --> 00:08:30,170
+been introduced and special query processing
+
+237
+00:08:30,600 --> 00:08:32,060
+techniques specifically to handle
+
+238
+00:08:32,830 --> 00:08:34,340
+this type of query on
+
+239
+00:08:34,520 --> 00:08:35,940
+star schemas on large databases.
+
+240
+00:08:36,500 --> 00:08:37,880
+And again, by large, just
+
+241
+00:08:37,900 --> 00:08:39,140
+think about the number of sales,
+
+242
+00:08:39,590 --> 00:08:40,640
+for example, in a large
+
+243
+00:08:40,929 --> 00:08:42,720
+retail chain, or a
+
+244
+00:08:43,059 --> 00:08:44,160
+number of web views, or
+
+245
+00:08:44,260 --> 00:08:45,620
+even shopping cart additions
+
+246
+00:08:46,210 --> 00:08:47,370
+in a large online vendor.
+
+247
+00:08:48,250 --> 00:08:49,100
+So, in all of those
+
+248
+00:08:49,220 --> 00:08:50,410
+applications, people are interested in
+
+249
+00:08:50,540 --> 00:08:51,410
+doing OLAP queries and they
+
+250
+00:08:52,050 --> 00:08:54,440
+tend to use a system that supports these special techniques.
+
+251
+00:08:55,760 --> 00:08:57,260
+Another component of getting good
+
+252
+00:08:57,460 --> 00:08:58,640
+performance in these systems
+
+253
+00:08:59,360 --> 00:09:00,670
+is the use of materialized views.
+
+254
+00:09:01,330 --> 00:09:02,900
+You might remember that materialized
+
+255
+00:09:03,020 --> 00:09:04,240
+views are useful when we
+
+256
+00:09:04,420 --> 00:09:06,140
+have a workload that
+
+257
+00:09:06,360 --> 00:09:08,610
+consists of lots of queries and not so many updates.
+
+258
+00:09:09,120 --> 00:09:11,760
+And that's exactly the type of workload we have in OLAP.
+
+259
+00:09:12,580 --> 00:09:14,100
+furthermore, we have many queries
+
+260
+00:09:14,570 --> 00:09:15,580
+that take roughly the same
+
+261
+00:09:15,910 --> 00:09:17,430
+structure so materialized
+
+262
+00:09:17,570 --> 00:09:18,990
+views are useful in that setting as well.
+
+263
+00:09:19,820 --> 00:09:20,950
+Now let me switch gears
+
+264
+00:09:21,230 --> 00:09:22,590
+and introduce a different way
+
+265
+00:09:22,890 --> 00:09:24,640
+of looking at the data in
+
+266
+00:09:24,700 --> 00:09:26,360
+these OLAP applications with star
+
+267
+00:09:26,730 --> 00:09:28,820
+schemas, and it's what's known as a data cube.
+
+268
+00:09:29,440 --> 00:09:30,410
+Sometimes this is also called
+
+269
+00:09:30,650 --> 00:09:32,850
+multidimensional OLAP and
+
+270
+00:09:32,980 --> 00:09:34,110
+the basic idea is that
+
+271
+00:09:34,270 --> 00:09:35,640
+when we have data with dimensions,
+
+272
+00:09:36,470 --> 00:09:37,430
+we can think of those dimensions
+
+273
+00:09:38,420 --> 00:09:39,900
+as forming the axis of a cube.
+
+274
+00:09:40,550 --> 00:09:42,520
+It's kind of like an N dimensional spreadsheet.
+
+275
+00:09:43,490 --> 00:09:44,810
+Now we can have any
+
+276
+00:09:45,010 --> 00:09:46,380
+number of dimensions, but for
+
+277
+00:09:46,680 --> 00:09:48,050
+the examples I'm gonna give,
+
+278
+00:09:49,450 --> 00:09:50,430
+the best I can draw is
+
+279
+00:09:50,550 --> 00:09:52,490
+up to three dimensions, and that's why people call it a cube.
+
+280
+00:09:52,770 --> 00:09:54,150
+Because they know how to draw three dimensions.
+
+281
+00:09:54,930 --> 00:09:56,140
+But again, any number of
+
+282
+00:09:56,400 --> 00:09:58,340
+dimensions are possible in this view of the data.
+
+283
+00:09:59,630 --> 00:10:02,740
+So we have our dimensions forming the axis of our cube.
+
+284
+00:10:03,420 --> 00:10:04,480
+And then the cells of the
+
+285
+00:10:04,600 --> 00:10:06,660
+cube, again, you can think of it sort of like cells of a spreadsheet.
+
+286
+00:10:07,820 --> 00:10:08,960
+Are the fact data.
+
+287
+00:10:09,410 --> 00:10:10,190
+Or the dependent data.
+
+288
+00:10:10,430 --> 00:10:11,690
+It's like in the previous example that
+
+289
+00:10:11,820 --> 00:10:13,510
+would be our quantity and price.
+
+290
+00:10:14,430 --> 00:10:15,530
+And finally we have aggregated
+
+291
+00:10:16,150 --> 00:10:17,740
+data on the sides, edges
+
+292
+00:10:18,130 --> 00:10:19,780
+and corners of corner of the cube.
+
+293
+00:10:20,100 --> 00:10:22,930
+Again similar to how you might aggregate columns in a spreadsheet.
+
+294
+00:10:23,840 --> 00:10:24,970
+So let's go ahead and
+
+295
+00:10:25,210 --> 00:10:26,160
+I'll do my best to draw
+
+296
+00:10:26,450 --> 00:10:27,940
+a picture to explain what's going on.
+
+297
+00:10:29,010 --> 00:10:30,260
+So here's my cube with these
+
+298
+00:10:30,650 --> 00:10:32,530
+three axes that I've drawn in black.
+
+299
+00:10:33,080 --> 00:10:34,510
+And I've drawn these dash lines
+
+300
+00:10:34,900 --> 00:10:36,020
+as well to sort of give
+
+301
+00:10:36,170 --> 00:10:37,660
+you a visual idea of the cube.
+
+302
+00:10:38,400 --> 00:10:39,410
+But I'm going to actually
+
+303
+00:10:39,490 --> 00:10:40,720
+get rid of these dash lines right
+
+304
+00:10:40,880 --> 00:10:42,220
+now just so we don't have too much clutter.
+
+305
+00:10:43,310 --> 00:10:44,790
+So for our sales example,
+
+306
+00:10:45,300 --> 00:10:46,270
+we're sticking with the same example,
+
+307
+00:10:47,200 --> 00:10:48,320
+we have 3 dimensions.
+
+308
+00:10:48,830 --> 00:10:49,750
+And those will label the three
+
+309
+00:10:49,780 --> 00:10:50,850
+the three axises of are cube
+
+310
+00:10:51,690 --> 00:10:53,000
+and in one dimension we will
+
+311
+00:10:53,150 --> 00:10:55,190
+have the stores and another
+
+312
+00:10:55,500 --> 00:10:56,520
+dimension we will have the
+
+313
+00:10:56,600 --> 00:10:58,840
+customers here, and in
+
+314
+00:10:58,960 --> 00:11:00,930
+another dimension we have the items.
+
+315
+00:11:01,970 --> 00:11:03,010
+Then we can think of
+
+316
+00:11:03,250 --> 00:11:04,520
+the points along these axes
+
+317
+00:11:05,210 --> 00:11:06,900
+as being the different elements
+
+318
+00:11:07,510 --> 00:11:08,700
+in each of those domains, or
+
+319
+00:11:08,970 --> 00:11:11,470
+the different tuples in each of those dimension tables.
+
+320
+00:11:12,460 --> 00:11:13,980
+So for example, in the
+
+321
+00:11:14,220 --> 00:11:15,660
+store domain, we'll have,
+
+322
+00:11:16,160 --> 00:11:18,300
+you know, store 1 store 2,
+
+323
+00:11:18,790 --> 00:11:20,310
+store 3 and so on.
+
+324
+00:11:20,620 --> 00:11:22,080
+I'm not giving them any fancy names here.
+
+325
+00:11:22,880 --> 00:11:23,740
+And so, each of those is
+
+326
+00:11:23,900 --> 00:11:25,090
+a point on that dimension and
+
+327
+00:11:25,380 --> 00:11:27,100
+similarly for the items will have
+
+328
+00:11:27,250 --> 00:11:29,820
+item 1 item 2 item 3 and so on.
+
+329
+00:11:30,650 --> 00:11:32,140
+And for the customers along the bottom,
+
+330
+00:11:33,020 --> 00:11:34,280
+we'll have customer 1 customer
+
+331
+00:11:34,990 --> 00:11:37,010
+number 2, customer 3 and so on.
+
+332
+00:11:38,150 --> 00:11:39,950
+Now here comes the tricky part, especially for drawing.
+
+333
+00:11:40,510 --> 00:11:41,380
+The idea is that
+
+334
+00:11:41,830 --> 00:11:43,320
+every cell in the
+
+335
+00:11:43,400 --> 00:11:44,970
+cube, so every combination of
+
+336
+00:11:45,180 --> 00:11:46,950
+item, costumer, and store has
+
+337
+00:11:47,160 --> 00:11:48,280
+a cell in the cube, so
+
+338
+00:11:48,370 --> 00:11:50,340
+this would be sort of a free floating cell here.
+
+339
+00:11:51,050 --> 00:11:52,350
+And This will have for our
+
+340
+00:11:52,770 --> 00:11:54,770
+schema the quantity and
+
+341
+00:11:54,920 --> 00:11:56,490
+the price for that
+
+342
+00:11:56,960 --> 00:11:59,910
+item, that customer, and that store.
+
+343
+00:12:00,220 --> 00:12:01,440
+So this might be the floating
+
+344
+00:12:01,750 --> 00:12:02,720
+thing here that's, you know, Item
+
+345
+00:12:03,120 --> 00:12:05,060
+I32, Costumer 4, and
+
+346
+00:12:05,710 --> 00:12:07,320
+Store 17, something like that.
+
+347
+00:12:08,010 --> 00:12:09,520
+And then floating in
+
+348
+00:12:09,620 --> 00:12:12,240
+there is this cell with the quantity and the price.
+
+349
+00:12:12,950 --> 00:12:14,130
+Now we are assuming that there's
+
+350
+00:12:14,350 --> 00:12:15,640
+just one quantity and price
+
+351
+00:12:15,960 --> 00:12:17,500
+for the combination of those three attributes.
+
+352
+00:12:17,830 --> 00:12:20,670
+And I'll come back to that in a moment, but let's assume that for now.
+
+353
+00:12:21,650 --> 00:12:22,720
+So that's what we have in
+
+354
+00:12:22,970 --> 00:12:24,770
+the whole central area of the cube.
+
+355
+00:12:25,880 --> 00:12:27,680
+So now on the faces, edges,
+
+356
+00:12:28,060 --> 00:12:29,130
+and corner of the cube
+
+357
+00:12:29,670 --> 00:12:31,420
+are going to have aggregated data.
+
+358
+00:12:32,230 --> 00:12:33,910
+And there does need
+
+359
+00:12:34,140 --> 00:12:36,320
+to be with each data cube a predefined aggregate.
+
+360
+00:12:37,460 --> 00:12:39,190
+So for this one let's say
+
+361
+00:12:39,380 --> 00:12:40,610
+that what we want as our
+
+362
+00:12:40,760 --> 00:12:42,130
+aggregate is the sum
+
+363
+00:12:42,340 --> 00:12:43,790
+of the quantity times the price
+
+364
+00:12:44,050 --> 00:12:44,850
+so we're going to figure
+
+365
+00:12:44,890 --> 00:12:45,860
+out the total amount that we're
+
+366
+00:12:46,010 --> 00:12:47,170
+making for different combinations
+
+367
+00:12:47,820 --> 00:12:48,920
+of stores, items, and customers.
+
+368
+00:12:49,810 --> 00:12:51,780
+So now let's consider a
+
+369
+00:12:51,850 --> 00:12:53,300
+cell on the face of the cube.
+
+370
+00:12:53,970 --> 00:12:56,110
+So again, I'm not drawing this very well.
+
+371
+00:12:56,300 --> 00:12:58,560
+But let's assume this is on the bottom face of the cube.
+
+372
+00:12:58,940 --> 00:13:00,730
+So, this is for a particular customer.
+
+373
+00:13:01,390 --> 00:13:02,640
+Say customer 10, in a
+
+374
+00:13:02,890 --> 00:13:04,230
+particular store, say store 7,
+
+375
+00:13:04,530 --> 00:13:06,200
+and then, since it's
+
+376
+00:13:06,440 --> 00:13:07,170
+on the bottom of the cube,
+
+377
+00:13:07,490 --> 00:13:08,890
+so we didn't go up this dimension
+
+378
+00:13:09,440 --> 00:13:11,160
+here, it considers all items
+
+379
+00:13:11,780 --> 00:13:13,290
+for customer 10 and store 7.
+
+380
+00:13:13,480 --> 00:13:14,590
+So this will be
+
+381
+00:13:15,370 --> 00:13:17,570
+the aggregate over all items
+
+382
+00:13:18,360 --> 00:13:19,930
+for that particular store and customer.
+
+383
+00:13:21,010 --> 00:13:23,920
+And we'd have similar values on the other faces of the cube.
+
+384
+00:13:24,240 --> 00:13:25,460
+So this face over here, for
+
+385
+00:13:25,660 --> 00:13:26,680
+example, would be for a
+
+386
+00:13:27,010 --> 00:13:29,770
+particular item and customer overall stores.
+
+387
+00:13:30,700 --> 00:13:32,310
+And then on the front face
+
+388
+00:13:32,640 --> 00:13:33,490
+of the cube, if you could imagine
+
+389
+00:13:34,300 --> 00:13:35,250
+that, would be for a particular
+
+390
+00:13:35,510 --> 00:13:36,810
+item and store over all customers.
+
+391
+00:13:38,250 --> 00:13:39,920
+Now let's talk about what's on the edge of the cube.
+
+392
+00:13:40,290 --> 00:13:41,530
+So here we have, say
+
+393
+00:13:41,970 --> 00:13:43,440
+for store 3, we'll
+
+394
+00:13:44,180 --> 00:13:45,870
+have the aggregate value over
+
+395
+00:13:46,440 --> 00:13:49,060
+all customers and items
+
+396
+00:13:49,590 --> 00:13:51,370
+in this point for store 3.
+
+397
+00:13:51,600 --> 00:13:52,720
+So that will be the
+
+398
+00:13:52,810 --> 00:13:54,080
+total sales that we
+
+399
+00:13:54,330 --> 00:13:55,880
+conducted at store S3.
+
+400
+00:13:56,880 --> 00:13:57,870
+Over here on this edge
+
+401
+00:13:58,140 --> 00:13:59,340
+we'd have the total for a
+
+402
+00:13:59,560 --> 00:14:01,640
+specific costumer and over here for specific items.
+
+403
+00:14:02,360 --> 00:14:03,770
+And then finally, we have
+
+404
+00:14:04,020 --> 00:14:05,970
+at the corner of the
+
+405
+00:14:06,800 --> 00:14:08,050
+cube the full aggregation.
+
+406
+00:14:08,830 --> 00:14:10,240
+So that's going to be in
+
+407
+00:14:10,430 --> 00:14:11,750
+this case the sum of
+
+408
+00:14:11,820 --> 00:14:13,540
+the quantity times price for every
+
+409
+00:14:13,970 --> 00:14:15,220
+store, customer and item.
+
+410
+00:14:16,350 --> 00:14:17,520
+So, I'm not a great artist,
+
+411
+00:14:17,890 --> 00:14:18,850
+but I hope this gives you
+
+412
+00:14:19,150 --> 00:14:21,100
+some understanding of how the data cube works.
+

@@ -1,0 +1,444 @@
+0
+00:00:00,050 --> 00:00:01,280
+So as we saw in the
+
+1
+00:00:01,400 --> 00:00:02,540
+cube, we have one cell
+
+2
+00:00:02,820 --> 00:00:04,480
+in the cube for each combination of
+
+3
+00:00:04,650 --> 00:00:06,800
+store ID, item ID, and customer ID.
+
+4
+00:00:07,490 --> 00:00:10,210
+So if those three together form a key, then it's very straight forward.
+
+5
+00:00:10,430 --> 00:00:12,180
+If the dimension attributes together
+
+6
+00:00:12,550 --> 00:00:13,850
+don't form a key then
+
+7
+00:00:14,080 --> 00:00:17,230
+we might be pre-aggregating already inside the data cube.
+
+8
+00:00:17,530 --> 00:00:18,780
+So, we might decide to already
+
+9
+00:00:19,030 --> 00:00:20,160
+have say the sum of quantity
+
+10
+00:00:20,640 --> 00:00:22,110
+times price for each combination
+
+11
+00:00:22,740 --> 00:00:23,620
+of store item and customer.
+
+12
+00:00:25,140 --> 00:00:26,040
+Another possibility and it's done
+
+13
+00:00:26,360 --> 00:00:27,870
+quite commonly is to add
+
+14
+00:00:28,270 --> 00:00:29,590
+to the fact table the attribute
+
+15
+00:00:30,000 --> 00:00:31,200
+date, or even the time.
+
+16
+00:00:31,880 --> 00:00:33,420
+And that can be used to create a key.
+
+17
+00:00:33,870 --> 00:00:34,900
+Typically, we won't have two
+
+18
+00:00:35,400 --> 00:00:37,290
+transactions at exactly the same time.
+
+19
+00:00:37,950 --> 00:00:38,860
+Now if we do have an
+
+20
+00:00:39,140 --> 00:00:40,850
+attribute here called date, one
+
+21
+00:00:41,060 --> 00:00:42,190
+might wonder is that a
+
+22
+00:00:42,370 --> 00:00:44,390
+dimension attribute or a dependent attribute.
+
+23
+00:00:45,800 --> 00:00:47,450
+Actually, it's pretty much
+
+24
+00:00:47,690 --> 00:00:49,270
+a dimension attribute because we're
+
+25
+00:00:49,560 --> 00:00:50,510
+gonna use it as another dimension
+
+26
+00:00:50,930 --> 00:00:52,160
+in our data cube, but the
+
+27
+00:00:52,230 --> 00:00:53,010
+difference being that we would
+
+28
+00:00:53,270 --> 00:00:55,890
+not have an actual dimension table listing the dates.
+
+29
+00:00:56,800 --> 00:00:57,950
+Now let's move on to
+
+30
+00:00:58,110 --> 00:00:59,370
+a couple other concepts in the
+
+31
+00:00:59,480 --> 00:01:02,010
+OLAP world called drill down and roll up.
+
+32
+00:01:02,640 --> 00:01:04,110
+The idea of drill
+
+33
+00:01:04,500 --> 00:01:05,320
+down, is that we may
+
+34
+00:01:05,560 --> 00:01:08,690
+be examining summary data and then we want to get more information.
+
+35
+00:01:09,170 --> 00:01:11,080
+Drill down into the details of that data.
+
+36
+00:01:12,080 --> 00:01:12,830
+And, actually, we can think
+
+37
+00:01:13,020 --> 00:01:14,990
+of that very specifically in
+
+38
+00:01:15,090 --> 00:01:16,510
+a SQL context as follows.
+
+39
+00:01:17,220 --> 00:01:18,190
+Let's suppose that we have
+
+40
+00:01:18,600 --> 00:01:19,880
+this query in SQL which
+
+41
+00:01:20,120 --> 00:01:21,750
+follows by the way the
+
+42
+00:01:22,280 --> 00:01:23,370
+description of the query I
+
+43
+00:01:23,580 --> 00:01:24,690
+had earlier where we'll do a
+
+44
+00:01:24,760 --> 00:01:26,240
+join and then a selection
+
+45
+00:01:26,740 --> 00:01:29,360
+and then it grouped by, and finally we have an aggregation here.
+
+46
+00:01:30,140 --> 00:01:31,700
+So this query specifically is
+
+47
+00:01:31,820 --> 00:01:33,520
+looking at our total sales broken
+
+48
+00:01:33,940 --> 00:01:35,410
+out by state and brand.
+
+49
+00:01:36,410 --> 00:01:39,090
+Maybe we'll look at that and we'll just say that's not enough detail.
+
+50
+00:01:39,530 --> 00:01:40,190
+I need more information.
+
+51
+00:01:41,300 --> 00:01:42,700
+So, to drill down what we
+
+52
+00:01:42,840 --> 00:01:44,760
+do is add a grouping attribute.
+
+53
+00:01:45,240 --> 00:01:46,230
+So if we added, for example,
+
+54
+00:01:46,730 --> 00:01:48,340
+category, when we add
+
+55
+00:01:48,480 --> 00:01:49,650
+another grouping attribute, that gets
+
+56
+00:01:49,920 --> 00:01:52,280
+us more data in the answer - more detail in our data.
+
+57
+00:01:53,680 --> 00:01:55,210
+Rollup is exactly the opposite.
+
+58
+00:01:55,770 --> 00:01:57,020
+Rollup says we're looking at
+
+59
+00:01:57,210 --> 00:01:58,410
+data and we decide we
+
+60
+00:01:58,530 --> 00:02:00,550
+have too much detail and we want to summarize.
+
+61
+00:02:00,950 --> 00:02:02,600
+And summarize is simply
+
+62
+00:02:02,940 --> 00:02:04,510
+a matter of removing a group by attributes.
+
+63
+00:02:04,940 --> 00:02:06,400
+So if we took out state, then
+
+64
+00:02:06,610 --> 00:02:07,570
+now we'll only see our
+
+65
+00:02:07,660 --> 00:02:08,920
+data summarized by brand
+
+66
+00:02:09,490 --> 00:02:11,340
+rather than broken out into state and brand.
+
+67
+00:02:12,570 --> 00:02:14,650
+And lastly, I want to introduce some SQL constructs.
+
+68
+00:02:15,470 --> 00:02:16,550
+These are constructs that have been added,
+
+69
+00:02:16,900 --> 00:02:17,860
+fairly recently, to the SQL
+
+70
+00:02:18,210 --> 00:02:20,460
+standard in order to perform OLAP queries.
+
+71
+00:02:20,860 --> 00:02:22,120
+And we'll be seeing these in our demo.
+
+72
+00:02:22,790 --> 00:02:24,240
+The constructs are called with cube
+
+73
+00:02:24,550 --> 00:02:25,930
+and with roll up and
+
+74
+00:02:26,040 --> 00:02:27,480
+they're added to the group by clause.
+
+75
+00:02:28,460 --> 00:02:30,480
+When we add with cube to
+
+76
+00:02:30,760 --> 00:02:31,720
+a query with a group by
+
+77
+00:02:32,400 --> 00:02:33,460
+what happens is that, basically,
+
+78
+00:02:34,070 --> 00:02:35,150
+we're adding to the result
+
+79
+00:02:35,650 --> 00:02:36,940
+of our query, the faces,
+
+80
+00:02:37,780 --> 00:02:39,250
+edges, and corner of the cube.
+
+81
+00:02:40,110 --> 00:02:42,740
+Using no values for the attributes that we're not constraining.
+
+82
+00:02:43,430 --> 00:02:44,460
+We'll see this clearly in the demo.
+
+83
+00:02:45,290 --> 00:02:48,950
+With Rollup is similar to With Cube, except it's smaller.
+
+84
+00:02:49,350 --> 00:02:50,440
+It actually is a portion of
+
+85
+00:02:50,530 --> 00:02:51,860
+the data cube, and that
+
+86
+00:02:52,019 --> 00:02:53,010
+makes sense when we have dimensions
+
+87
+00:02:53,519 --> 00:02:54,640
+that are inherently hierarchical.
+
+88
+00:02:55,460 --> 00:02:56,850
+And again we'll see that in the demo as well.
+
+89
+00:02:57,800 --> 00:02:58,790
+So, we can conclude there are
+
+90
+00:02:58,910 --> 00:03:00,190
+two broad types of data
+
+91
+00:03:00,390 --> 00:03:02,360
+base activity, online transaction processing.
+
+92
+00:03:02,989 --> 00:03:04,640
+Short, simple transactions touching
+
+93
+00:03:04,950 --> 00:03:05,790
+small portions of the data,
+
+94
+00:03:06,560 --> 00:03:08,170
+lots of updating and OLAP,
+
+95
+00:03:08,520 --> 00:03:10,560
+or online analytical processing, where
+
+96
+00:03:10,690 --> 00:03:12,200
+we have complex queries, long transactions,
+
+97
+00:03:13,280 --> 00:03:14,290
+might touch a large portion of
+
+98
+00:03:14,380 --> 00:03:16,220
+the data and might not update the data at all.
+
+99
+00:03:16,930 --> 00:03:18,710
+For online analytical processing OLAP
+
+100
+00:03:19,190 --> 00:03:21,310
+we saw that star schemas are frequently used.
+
+101
+00:03:21,890 --> 00:03:24,580
+We saw how to view the data as a data cube.
+
+102
+00:03:25,140 --> 00:03:26,780
+Of course, that can be in any number of dimensions.
+
+103
+00:03:27,070 --> 00:03:28,180
+We just use three for visualization.
+
+104
+00:03:28,540 --> 00:03:30,860
+There are two new
+
+105
+00:03:31,080 --> 00:03:33,160
+constructs in SQL: With Cube and With Rollup.
+
+106
+00:03:33,980 --> 00:03:35,330
+And finally this type of
+
+107
+00:03:35,480 --> 00:03:36,980
+query can be very stressful on
+
+108
+00:03:37,210 --> 00:03:38,780
+a database system when we have very large databases.
+
+109
+00:03:39,620 --> 00:03:40,930
+So special techniques have been
+
+110
+00:03:41,230 --> 00:03:44,150
+introduced into systems to help perform these queries efficiently.
+
